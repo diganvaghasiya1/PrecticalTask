@@ -23,6 +23,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
 
+
+
     fun InIt() {
         setTitle("ImageList Screen")
         val imageListClient = ApiClient().getClient().create(ApiInterface::class.java)
