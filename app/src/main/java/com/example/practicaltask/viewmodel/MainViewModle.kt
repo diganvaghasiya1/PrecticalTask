@@ -13,10 +13,11 @@ class MainViewModle(val mainImageRepository: MainImageRepository) : ViewModel() 
         get() = mainImageRepository.livedata
 
 
-    init {
+    fun refresh(){
         viewModelScope.launch(Dispatchers.IO) {
 
             mainImageRepository.getImageList()
         }
     }
+   
 }

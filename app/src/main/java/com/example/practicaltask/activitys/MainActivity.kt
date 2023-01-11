@@ -3,6 +3,7 @@ package com.example.practicaltask.activitys
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.practicaltask.R
 import com.example.practicaltask.adapters.ImageListAdapter
 import com.example.practicaltask.apiInterface.ApiClient
@@ -23,8 +24,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
 
-
-
     fun InIt() {
         setTitle("ImageList Screen")
         val imageListClient = ApiClient().getClient().create(ApiInterface::class.java)
@@ -32,16 +31,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         mainViewModle = ViewModelProvider(this,
             MainImageFactory(imageRepository)).get(MainViewModle::class.java)
-
+        mainViewModle.refresh()
 
         binding.rvImage.layoutManager = LinearLayoutManager(this)
         binding.rvImage.setHasFixedSize(true)
 
+        binding.container.setOnRefreshListener{
+            mainViewModle.refresh()
 
+            binding.container.isRefreshing = false
+        }
         mainViewModle.imageList.observe(this) {
-            Log.e("TAG", "InIt: "+it.count())
-            var imageListAdapter= ImageListAdapter (it,this)
-            binding.rvImage.adapter =imageListAdapter
+            Log.e("TAG", "InIt: " + it.count())
+            var imageListAdapter = ImageListAdapter(it, this)
+            binding.rvImage.adapter = imageListAdapter
 
         }
 
